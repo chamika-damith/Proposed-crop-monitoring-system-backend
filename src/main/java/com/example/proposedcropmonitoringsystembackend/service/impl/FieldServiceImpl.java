@@ -53,6 +53,6 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public List<FieldDTO> getAll() {
-        return null;
+        return fieldMapping.asFieldDTOList(fieldDao.findAll());
     }
 }
