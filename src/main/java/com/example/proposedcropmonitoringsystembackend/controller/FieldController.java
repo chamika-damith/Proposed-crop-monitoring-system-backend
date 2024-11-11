@@ -83,4 +83,9 @@ public class FieldController {
         return fieldService.getAll();
     }
 
+    @DeleteMapping(value = "/{fieldId}")
+    public ResponseEntity<Void> deleteField(@PathVariable("fieldId") String fieldId){
+        fieldService.delete(fieldId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

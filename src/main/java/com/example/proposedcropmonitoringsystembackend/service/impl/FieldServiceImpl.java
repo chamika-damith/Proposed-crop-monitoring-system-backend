@@ -28,7 +28,10 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public void delete(String id) {
-
+        Optional<FieldEntity> byId = fieldDao.findById(id);
+        if (byId.isPresent()) {
+            fieldDao.deleteById(id);
+        }
     }
 
     @Override
