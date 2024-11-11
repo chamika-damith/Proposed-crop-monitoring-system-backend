@@ -44,6 +44,10 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public FieldDTO get(String id) {
+        if (fieldDao.existsById(id)){
+            FieldEntity referenceById = fieldDao.getReferenceById(id);
+            return fieldMapping.toFieldDTO(referenceById);
+        }
         return null;
     }
 

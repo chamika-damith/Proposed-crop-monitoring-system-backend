@@ -1,6 +1,7 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
+import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,12 @@ public class FieldController {
 
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+
+    @GetMapping(value = "/{fieldId}" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public FieldDTO getField(@PathVariable("fieldId") String fieldId){
+        return fieldService.get(fieldId);
     }
 
 }
