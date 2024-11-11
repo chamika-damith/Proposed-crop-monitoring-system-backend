@@ -2,6 +2,7 @@ package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.FieldDao;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
+import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.util.Mapping;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,7 +33,13 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public void update(String id, FieldDTO dto) {
-
+        Optional<FieldEntity> byId = fieldDao.findById(id);
+        if (byId.isPresent()) {
+            byId.get().setFieldName(dto.getFieldName());
+            byId.get().setFieldLocation(dto.getFieldLocation());
+            byId.get().setFieldSize(dto.getFieldSize());
+            byId.get().setFieldImage(dto.getFieldImage());
+        }
     }
 
     @Override

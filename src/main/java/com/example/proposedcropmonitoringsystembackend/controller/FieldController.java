@@ -3,9 +3,8 @@ package com.example.proposedcropmonitoringsystembackend.controller;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +41,33 @@ public class FieldController {
         }
 
 
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateField(@RequestParam("fieldCode") String fieldCode,
+                                            @RequestParam("fieldName") String fieldName,
+                                            @RequestParam("fieldLocation") String fieldLocation,
+                                            @RequestParam("fieldSize") String fieldSize,
+                                            @RequestParam("fieldImage") MultipartFile fieldImage){
+
+        String base64ProPic = "";
+
+        try {
+            byte [] bytesProPic = fieldImage.getBytes();
+            base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
+
+            double parsedFieldSize = Double.parseDouble(fieldSize);
+
+            FieldDTO fieldDTO = new FieldDTO(fieldCode,fieldName,fieldLocation,parsedFieldSize,base64ProPic);
+            fieldService.update(fieldCode,fieldDTO);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
 }
