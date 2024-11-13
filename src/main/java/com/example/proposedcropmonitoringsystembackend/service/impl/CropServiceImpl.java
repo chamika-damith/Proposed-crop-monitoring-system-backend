@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -85,6 +86,16 @@ public class CropServiceImpl implements CropService {
 
     @Override
     public List<CropDTO> getAll() {
-        return mapping.asCropDTOList(cropDao.findAll());
+        List<CropEntity> cropEntities = cropDao.findAll();
+
+        List<CropDTO> cropDTOList = cropEntities.stream().map(cropEntity -> {
+            FieldDTO fieldDTO = mapping.toFieldDTO(cropEntity.getFieldEntity());
+            CropDTO cropDTO = mapping.toCropDTO(cropEntity);
+            cropDTO.setFieldDTO(fieldDTO);
+            return cropDTO;
+        }).collect(Collectors.toList());
+
+        return cropDTOList;
     }
+
 }

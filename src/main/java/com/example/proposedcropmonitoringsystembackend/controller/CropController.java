@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/crops")
@@ -99,6 +100,11 @@ public class CropController {
     @GetMapping(value = "/{cropdId}" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public CropDTO getCrop(@PathVariable("cropdId") String cropId){
         return cropService.get(cropId);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CropDTO> getAllCrops(){
+        return cropService.getAll();
     }
 
 
