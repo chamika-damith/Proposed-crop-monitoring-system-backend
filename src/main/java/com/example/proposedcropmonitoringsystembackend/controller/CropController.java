@@ -107,5 +107,11 @@ public class CropController {
         return cropService.getAll();
     }
 
+    @DeleteMapping(value = "/{cropdId}")
+    public ResponseEntity<Void> deleteCrop(@PathVariable("cropdId") String cropId){
+        cropService.delete(cropId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 }
