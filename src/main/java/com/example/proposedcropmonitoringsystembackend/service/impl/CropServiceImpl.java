@@ -6,6 +6,7 @@ import com.example.proposedcropmonitoringsystembackend.entity.impl.CropEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.service.CropService;
 import com.example.proposedcropmonitoringsystembackend.util.Mapping;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +46,27 @@ public class CropServiceImpl implements CropService {
     @Override
     public void update(String id, CropDTO dto) {
         Optional<CropEntity> byId = cropDao.findById(id);
+
         if (byId.isPresent()) {
-            byId.get().setCategory(dto.getCategory());
-            byId.get().setImage(dto.getImage());
-            byId.get().setSeason(dto.getSeason());
-            byId.get().setCommonName(dto.getCommonName());
-            byId.get().setScientificName(dto.getScientificName());
+            CropEntity cropEntity = byId.get();
+
+            cropEntity.setCategory(dto.getCategory());
+            cropEntity.setImage(dto.getImage());
+            cropEntity.setSeason(dto.getSeason());
+            cropEntity.setCommonName(dto.getCommonName());
+            cropEntity.setScientificName(dto.getScientificName());
+
+            if (dto.getFieldDTO() != null) {
+                FieldEntity fieldEntity = mapping.toFieldEntity(dto.getFieldDTO());
+                cropEntity.setFieldEntity(fieldEntity);
+            }
+
+            cropDao.save(cropEntity);
+        } else {
+            throw new EntityNotFoundException("Crop entity with ID " + id + " not found.");
         }
     }
+
 
     @Override
     public CropDTO get(String id) {
