@@ -1,12 +1,11 @@
 package com.example.proposedcropmonitoringsystembackend.entity.impl;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +19,6 @@ public class FieldEntity {
     double  fieldSize;
     @Column(columnDefinition = "LONGTEXT")
     String fieldImage;
+    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
+    List<CropEntity> cropEntityList;
 }
