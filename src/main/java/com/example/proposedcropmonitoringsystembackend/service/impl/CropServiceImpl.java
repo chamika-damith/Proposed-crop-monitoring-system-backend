@@ -2,6 +2,7 @@ package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.CropDao;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.CropEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.service.CropService;
@@ -71,8 +72,12 @@ public class CropServiceImpl implements CropService {
     @Override
     public CropDTO get(String id) {
         if (cropDao.existsById(id)){
-            CropEntity referenceById = cropDao.getReferenceById(id);
-            return mapping.toCropDTO(referenceById);
+            CropEntity cropEntityById = cropDao.getReferenceById(id);
+            FieldDTO fieldDTO = mapping.toFieldDTO(cropEntityById.getFieldEntity());
+            CropDTO cropDTO = mapping.toCropDTO(cropEntityById);
+            cropDTO.setFieldDTO(fieldDTO);
+
+            return cropDTO;
         }
 
         return null;

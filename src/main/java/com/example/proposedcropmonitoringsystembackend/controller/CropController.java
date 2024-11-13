@@ -96,4 +96,10 @@ public class CropController {
     }
 
 
+    @GetMapping(value = "/{cropdId}" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public CropDTO getCrop(@PathVariable("cropdId") String cropId){
+        return cropService.get(cropId);
+    }
+
+
 }
