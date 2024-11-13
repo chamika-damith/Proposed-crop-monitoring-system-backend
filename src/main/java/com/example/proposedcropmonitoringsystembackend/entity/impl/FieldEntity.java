@@ -1,5 +1,6 @@
 package com.example.proposedcropmonitoringsystembackend.entity.impl;
 
+import com.example.proposedcropmonitoringsystembackend.entity.SuperEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class FieldEntity {
+public class FieldEntity implements SuperEntity {
     @Id
     String fieldCode;
     String fieldName;

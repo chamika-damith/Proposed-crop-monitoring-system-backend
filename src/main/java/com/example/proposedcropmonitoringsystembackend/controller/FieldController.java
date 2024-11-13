@@ -1,5 +1,6 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,6 +39,7 @@ public class FieldController {
 
             double parsedFieldSize = Double.parseDouble(fieldSize);
 
+
             FieldDTO fieldDTO = new FieldDTO(fieldCode,fieldName,fieldLocation,parsedFieldSize,base64ProPic);
             fieldService.save(fieldDTO);
         } catch (IOException e) {
@@ -61,6 +64,7 @@ public class FieldController {
             base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
 
             double parsedFieldSize = Double.parseDouble(fieldSize);
+
 
             FieldDTO fieldDTO = new FieldDTO(fieldCode,fieldName,fieldLocation,parsedFieldSize,base64ProPic);
             fieldService.update(fieldCode,fieldDTO);
