@@ -38,4 +38,7 @@ public class StaffEntity implements SuperEntity {
             inverseJoinColumns = @JoinColumn(name = "field_code")
     )
     List<FieldEntity> fields;
+
+    @OneToMany(mappedBy = "staff")
+    List<VehicleEntity> vehicleEntities;
 }
