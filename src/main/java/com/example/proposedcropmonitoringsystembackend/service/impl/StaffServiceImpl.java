@@ -1,6 +1,7 @@
 package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.StaffDao;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.StaffEntity;
@@ -68,7 +69,17 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public StaffDTO get(String id) {
-        return null;
+        if (staffDao.existsById(id)) {
+            StaffEntity staffEntityById = staffDao.getReferenceById(id);
+
+            StaffDTO staffDTO = mapping.toStaffDTO(staffEntityById);
+            List<FieldDTO> fieldDTOList = mapping.asFieldDTOList(staffEntityById.getFields());
+            staffDTO.setFields(fieldDTOList);
+
+            return staffDTO;
+        } else {
+            throw new EntityNotFoundException("Staff entity with ID " + id + " not found.");
+        }
     }
 
     @Override

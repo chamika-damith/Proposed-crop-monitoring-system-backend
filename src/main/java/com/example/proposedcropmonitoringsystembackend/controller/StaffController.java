@@ -1,5 +1,6 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class StaffController {
         staffService.update(staffId,staffDTO);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{staffId}" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public StaffDTO getStaff(@PathVariable("staffId") String staffId){
+        return staffService.get(staffId);
     }
 }
