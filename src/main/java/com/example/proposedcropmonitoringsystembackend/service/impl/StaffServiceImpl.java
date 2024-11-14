@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,7 +36,12 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void delete(String id) {
-
+        Optional<StaffEntity> byId = staffDao.findById(id);
+        if (byId.isPresent()) {
+            staffDao.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Staff entity with ID " + id + " not found.");
+        }
     }
 
     @Override
@@ -84,6 +90,13 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public List<StaffDTO> getAll() {
-        return null;
+        List<StaffEntity> staffEntities = staffDao.findAll();
+
+        return staffEntities.stream().map(staffEntity -> {
+            StaffDTO staffDTO = mapping.toStaffDTO(staffEntity);
+            List<FieldDTO> fieldDTOList = mapping.asFieldDTOList(staffEntity.getFields());
+            staffDTO.setFields(fieldDTOList);
+            return staffDTO;
+        }).collect(Collectors.toList());
     }
 }
