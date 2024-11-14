@@ -22,4 +22,7 @@ public class FieldEntity implements SuperEntity {
     String fieldImage;
     @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
     List<CropEntity> cropEntityList;
+
+    @ManyToMany(mappedBy = "fields")
+    List<StaffEntity> staffEntityList;
 }
