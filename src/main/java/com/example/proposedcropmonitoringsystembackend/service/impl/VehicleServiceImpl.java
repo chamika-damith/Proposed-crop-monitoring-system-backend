@@ -1,6 +1,7 @@
 package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.VehicleDao;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.VehicleDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.StaffEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.VehicleEntity;
@@ -63,7 +64,17 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public VehicleDTO get(String id) {
-        return null;
+        if (vehicleDao.existsById(id)) {
+            VehicleEntity vehicleEntity = vehicleDao.getReferenceById(id);
+
+            VehicleDTO vehicleDTO = mapping.toVehicleDTO(vehicleEntity);
+            StaffDTO staffDTO = mapping.toStaffDTO(vehicleEntity.getStaff());
+            vehicleDTO.setStaff(staffDTO);
+
+            return vehicleDTO;
+        } else {
+            throw new EntityNotFoundException("Vehicle entity with ID " + id + " not found.");
+        }
     }
 
     @Override

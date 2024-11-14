@@ -1,5 +1,6 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.VehicleDTO;
 import com.example.proposedcropmonitoringsystembackend.service.VehicleService;
@@ -29,5 +30,10 @@ public class VehicleController {
         vehicleService.update(vehicleCode,vehicleDTO);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{vehicleCode}" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public VehicleDTO getVehicle(@PathVariable("vehicleCode") String vehicleCode){
+        return vehicleService.get(vehicleCode);
     }
 }
