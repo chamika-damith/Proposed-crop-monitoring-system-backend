@@ -2,14 +2,8 @@ package com.example.proposedcropmonitoringsystembackend.util;
 
 import com.example.proposedcropmonitoringsystembackend.dao.CropDao;
 import com.example.proposedcropmonitoringsystembackend.dao.StaffDao;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.VehicleDTO;
-import com.example.proposedcropmonitoringsystembackend.entity.impl.CropEntity;
-import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
-import com.example.proposedcropmonitoringsystembackend.entity.impl.StaffEntity;
-import com.example.proposedcropmonitoringsystembackend.entity.impl.VehicleEntity;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.*;
+import com.example.proposedcropmonitoringsystembackend.entity.impl.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +64,16 @@ public class Mapping {
     }
     public List<VehicleDTO> asVehicleDTOList(List<VehicleEntity> vehicleEntities) {
         return modelMapper.map(vehicleEntities, new TypeToken<List<VehicleDTO>>() {}.getType());
+    }
+
+    //for equipment mapping
+    public EquipmentEntity toEquipmentEntity(EquipmentDTO equipmentDTO) {
+        return modelMapper.map(equipmentDTO, EquipmentEntity.class);
+    }
+    public EquipmentDTO toEquipmentDTO(EquipmentEntity equipmentEntity) {
+        return modelMapper.map(equipmentEntity, EquipmentDTO.class);
+    }
+    public List<EquipmentDTO> asEquipmentDTOList(List<EquipmentEntity> equipmentEntityList) {
+        return modelMapper.map(equipmentEntityList, new TypeToken<List<EquipmentDTO>>() {}.getType());
     }
 }

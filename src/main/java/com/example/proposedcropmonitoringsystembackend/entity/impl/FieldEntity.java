@@ -25,4 +25,7 @@ public class FieldEntity implements SuperEntity {
 
     @ManyToMany(mappedBy = "fields")
     List<StaffEntity> staffEntityList;
+
+    @OneToMany(mappedBy = "field")
+    List<EquipmentEntity> equipmentEntityList;
 }

@@ -41,4 +41,7 @@ public class StaffEntity implements SuperEntity {
 
     @OneToMany(mappedBy = "staff")
     List<VehicleEntity> vehicleEntities;
+
+    @OneToMany(mappedBy = "staff")
+    List<EquipmentEntity> equipmentEntityList;
 }
