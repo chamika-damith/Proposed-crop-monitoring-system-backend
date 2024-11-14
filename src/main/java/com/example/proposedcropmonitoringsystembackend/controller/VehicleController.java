@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/vehicle")
 public class VehicleController {
@@ -35,5 +37,10 @@ public class VehicleController {
     @GetMapping(value = "/{vehicleCode}" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public VehicleDTO getVehicle(@PathVariable("vehicleCode") String vehicleCode){
         return vehicleService.get(vehicleCode);
+    }
+
+    @GetMapping
+    public List<VehicleDTO> getAllVehicle(){
+        return vehicleService.getAll();
     }
 }
