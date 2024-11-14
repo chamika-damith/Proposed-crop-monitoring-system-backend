@@ -39,8 +39,14 @@ public class VehicleController {
         return vehicleService.get(vehicleCode);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VehicleDTO> getAllVehicle(){
         return vehicleService.getAll();
+    }
+
+    @DeleteMapping(value = "/{vehicleCode}")
+    public ResponseEntity<Void> deleteCrop(@PathVariable("vehicleCode") String vehicleCode){
+        vehicleService.delete(vehicleCode);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
