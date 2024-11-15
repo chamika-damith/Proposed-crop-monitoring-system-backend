@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/equipment")
 public class EquipmentController {
@@ -34,5 +36,16 @@ public class EquipmentController {
     @GetMapping(value = "/{equipmentCode}" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public EquipmentDTO getEquipment(@PathVariable("equipmentCode") String equipmentCode ){
         return equipmentService.get(equipmentCode);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EquipmentDTO> getAllEquipment(){
+        return equipmentService.getAll();
+    }
+
+    @DeleteMapping(value = "/{equipmentCode}")
+    public ResponseEntity<Void> deleteEquipment(@PathVariable("equipmentCode") String equipmentCode){
+        equipmentService.delete(equipmentCode);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

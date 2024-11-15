@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,7 +38,12 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void delete(String id) {
-
+        Optional<EquipmentEntity> byId = equipmentDao.findById(id);
+        if (byId.isPresent()) {
+            equipmentDao.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Equipment entity with ID " + id + " not found.");
+        }
     }
 
     @Override
@@ -90,6 +96,22 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public List<EquipmentDTO> getAll() {
-        return null;
+        List<EquipmentEntity> equipmentEntities = equipmentDao.findAll();
+
+        return equipmentEntities.stream().map(equipmentEntity -> {
+            EquipmentDTO equipmentDTO = mapping.toEquipmentDTO(equipmentEntity);
+
+            if (equipmentEntity.getStaff() != null) {
+                StaffDTO staffDTO = mapping.toStaffDTO(equipmentEntity.getStaff());
+                equipmentDTO.setStaff(staffDTO);
+            }
+
+            if (equipmentEntity.getField() != null) {
+                FieldDTO fieldDTO = mapping.toFieldDTO(equipmentEntity.getField());
+                equipmentDTO.setField(fieldDTO);
+            }
+
+            return equipmentDTO;
+        }).collect(Collectors.toList());
     }
 }
