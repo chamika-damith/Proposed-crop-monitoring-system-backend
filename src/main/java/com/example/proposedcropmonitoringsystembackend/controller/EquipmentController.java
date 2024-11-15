@@ -30,4 +30,9 @@ public class EquipmentController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/{equipmentCode}" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public EquipmentDTO getEquipment(@PathVariable("equipmentCode") String equipmentCode ){
+        return equipmentService.get(equipmentCode);
+    }
 }

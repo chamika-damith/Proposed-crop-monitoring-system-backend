@@ -2,6 +2,8 @@ package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.EquipmentDao;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.EquipmentDTO;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.EquipmentEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.StaffEntity;
@@ -67,6 +69,22 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public EquipmentDTO get(String id) {
+        if (equipmentDao.existsById(id)) {
+            EquipmentEntity equipmentEntity = equipmentDao.getReferenceById(id);
+            EquipmentDTO equipmentDTO = mapping.toEquipmentDTO(equipmentEntity);
+
+            if (equipmentEntity.getStaff() != null) {
+                StaffDTO staffDTO = mapping.toStaffDTO(equipmentEntity.getStaff());
+                equipmentDTO.setStaff(staffDTO);
+            }
+
+            if (equipmentEntity.getField() != null) {
+                FieldDTO fieldDTO = mapping.toFieldDTO(equipmentEntity.getField());
+                equipmentDTO.setField(fieldDTO);
+            }
+
+            return equipmentDTO;
+        }
         return null;
     }
 
