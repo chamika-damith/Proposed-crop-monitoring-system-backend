@@ -29,4 +29,5 @@ public class StaffDTO implements SuperDTO {
     @Enumerated(EnumType.STRING)
     Role role;
     List<FieldDTO> fields;
+    LogDTO log;
 }

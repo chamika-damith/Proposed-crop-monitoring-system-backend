@@ -1,12 +1,14 @@
 package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.FieldDao;
+import com.example.proposedcropmonitoringsystembackend.dao.LogDao;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.LogDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
+import com.example.proposedcropmonitoringsystembackend.entity.impl.LogEntity;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.util.Mapping;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +22,18 @@ public class FieldServiceImpl implements FieldService {
     private FieldDao fieldDao;
 
     @Autowired
+    private LogDao logDao;
+
+    @Autowired
     private Mapping fieldMapping;
     @Override
     public void save(FieldDTO dto) {
-        fieldDao.save(fieldMapping.toFieldEntity(dto));
+        LogEntity logEntity = fieldMapping.toLogEntity(dto.getLog());
+        FieldEntity fieldEntity = fieldMapping.toFieldEntity(dto);
+        fieldEntity.setLog(logEntity);
+
+        logDao.save(logEntity);
+        fieldDao.save(fieldEntity);
     }
 
     @Override
@@ -38,10 +48,17 @@ public class FieldServiceImpl implements FieldService {
     public void update(String id, FieldDTO dto) {
         Optional<FieldEntity> byId = fieldDao.findById(id);
         if (byId.isPresent()) {
-            byId.get().setFieldName(dto.getFieldName());
-            byId.get().setFieldLocation(dto.getFieldLocation());
-            byId.get().setFieldSize(dto.getFieldSize());
-            byId.get().setFieldImage(dto.getFieldImage());
+            FieldEntity fieldEntity = byId.get();
+
+            fieldEntity.setFieldName(dto.getFieldName());
+            fieldEntity.setFieldLocation(dto.getFieldLocation());
+            fieldEntity.setFieldSize(dto.getFieldSize());
+            fieldEntity.setFieldImage(dto.getFieldImage());
+            LogEntity logEntity = fieldMapping.toLogEntity(dto.getLog());
+            fieldEntity.setLog(logEntity);
+
+            logDao.save(logEntity);
+            fieldDao.save(fieldEntity);
         }
     }
 
@@ -49,7 +66,11 @@ public class FieldServiceImpl implements FieldService {
     public FieldDTO get(String id) {
         if (fieldDao.existsById(id)){
             FieldEntity referenceById = fieldDao.getReferenceById(id);
-            return fieldMapping.toFieldDTO(referenceById);
+            FieldDTO fieldDTO = fieldMapping.toFieldDTO(referenceById);
+            LogDTO logDTO = fieldMapping.toLogDTO(referenceById.getLog());
+            fieldDTO.setLog(logDTO);
+
+            return fieldDTO;
         }
         return null;
     }

@@ -26,72 +26,42 @@ public class CropController {
     @Autowired
     private FieldService fieldService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> saveCrop(
-            @RequestParam("cropCode") String cropCode,
-            @RequestParam("commonName") String commonName,
-            @RequestParam("scientificName") String scientificName,
-            @RequestParam("category") String category,
-            @RequestParam("season") String season,
-            @RequestParam("image") MultipartFile image,
-            @RequestParam("fieldCode") String fieldCode) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> saveCrop(@RequestBody CropDTO cropDTO) {
 
         String base64ProPic = "";
 
-        try {
-            byte[] bytesProPic = image.getBytes();
-            base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
+        byte[] bytesProPic = cropDTO.getImage().getBytes();
+        base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
 
-            FieldDTO fieldDTO = fieldService.get(fieldCode);
-            if (fieldDTO == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
-
-            CropDTO cropDTO = new CropDTO(cropCode, commonName, scientificName, base64ProPic, category, season, fieldDTO);
-
-            cropService.save(cropDTO);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        FieldDTO fieldDTO = fieldService.get(cropDTO.getFieldDTO().getFieldCode());
+        if (fieldDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        cropDTO.setFieldDTO(fieldDTO);
+        cropDTO.setImage(base64ProPic);
+        cropService.save(cropDTO);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> updateCrop(
-            @RequestParam("cropCode") String cropCode,
-            @RequestParam("commonName") String commonName,
-            @RequestParam("scientificName") String scientificName,
-            @RequestParam("category") String category,
-            @RequestParam("season") String season,
-            @RequestParam("image") MultipartFile image,
-            @RequestParam("fieldCode") String fieldCode){
+    @PutMapping(value = "/{cropId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateCrop(@RequestBody CropDTO cropDTO,@PathVariable("cropId") String cropId){
 
 
         String base64ProPic = "";
 
-        try {
-            byte[] bytesProPic = image.getBytes();
-            base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
+        byte[] bytesProPic = cropDTO.getImage().getBytes();
+        base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
 
-            FieldDTO fieldDTO = fieldService.get(fieldCode);
-            if (fieldDTO == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
-
-            CropDTO cropDTO = new CropDTO(cropCode, commonName, scientificName, base64ProPic, category, season, fieldDTO);
-
-            cropService.update(cropCode,cropDTO);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        FieldDTO fieldDTO = fieldService.get(cropDTO.getFieldDTO().getFieldCode());
+        if (fieldDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        cropDTO.setImage(base64ProPic);
 
-
+        cropService.update(cropId,cropDTO);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

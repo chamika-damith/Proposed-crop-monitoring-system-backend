@@ -21,7 +21,11 @@ public class CropEntity implements SuperEntity {
     String category;
     String season;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "field_code" , nullable = false)
     FieldEntity fieldEntity;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "log_code")
+    LogEntity log;
 }

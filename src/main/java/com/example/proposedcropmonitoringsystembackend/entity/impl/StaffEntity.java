@@ -44,4 +44,8 @@ public class StaffEntity implements SuperEntity {
 
     @OneToMany(mappedBy = "staff")
     List<EquipmentEntity> equipmentEntityList;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "log_code")
+    LogEntity log;
 }

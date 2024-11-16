@@ -17,4 +17,5 @@ public class CropDTO implements SuperDTO {
     String category;
     String season;
     FieldDTO fieldDTO;
+    LogDTO log;
 }

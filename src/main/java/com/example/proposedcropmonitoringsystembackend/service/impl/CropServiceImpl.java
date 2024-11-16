@@ -1,10 +1,13 @@
 package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.CropDao;
+import com.example.proposedcropmonitoringsystembackend.dao.LogDao;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.LogDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.CropEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
+import com.example.proposedcropmonitoringsystembackend.entity.impl.LogEntity;
 import com.example.proposedcropmonitoringsystembackend.service.CropService;
 import com.example.proposedcropmonitoringsystembackend.util.Mapping;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,14 +27,19 @@ public class CropServiceImpl implements CropService {
     private CropDao cropDao;
 
     @Autowired
+    private LogDao logDao;
+
+    @Autowired
     private Mapping mapping;
 
     @Override
     public void save(CropDTO dto) {
+        LogEntity logEntity = mapping.toLogEntity(dto.getLog());
         FieldEntity fieldEntity = mapping.toFieldEntity(dto.getFieldDTO());
         CropEntity cropEntity = mapping.toCropEntity(dto);
 
         cropEntity.setFieldEntity(fieldEntity);
+        cropEntity.setLog(logEntity);
 
         cropDao.save(cropEntity);
     }
@@ -63,6 +71,13 @@ public class CropServiceImpl implements CropService {
                 cropEntity.setFieldEntity(fieldEntity);
             }
 
+            if (dto.getLog() != null) {
+                LogEntity logEntity = mapping.toLogEntity(dto.getLog());
+                cropEntity.setLog(logEntity);
+                logDao.save(logEntity);
+            }
+
+
             cropDao.save(cropEntity);
         } else {
             throw new EntityNotFoundException("Crop entity with ID " + id + " not found.");
@@ -76,6 +91,8 @@ public class CropServiceImpl implements CropService {
             CropEntity cropEntityById = cropDao.getReferenceById(id);
             FieldDTO fieldDTO = mapping.toFieldDTO(cropEntityById.getFieldEntity());
             CropDTO cropDTO = mapping.toCropDTO(cropEntityById);
+            LogDTO logDTO = mapping.toLogDTO(cropEntityById.getLog());
+            cropDTO.setLog(logDTO);
             cropDTO.setFieldDTO(fieldDTO);
 
             return cropDTO;
@@ -91,6 +108,8 @@ public class CropServiceImpl implements CropService {
         List<CropDTO> cropDTOList = cropEntities.stream().map(cropEntity -> {
             FieldDTO fieldDTO = mapping.toFieldDTO(cropEntity.getFieldEntity());
             CropDTO cropDTO = mapping.toCropDTO(cropEntity);
+            LogDTO logDTO = mapping.toLogDTO(cropEntity.getLog());
+            cropDTO.setLog(logDTO);
             cropDTO.setFieldDTO(fieldDTO);
             return cropDTO;
         }).collect(Collectors.toList());

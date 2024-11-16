@@ -5,15 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldDTO implements SuperDTO {
-    String fieldCode;
-    String fieldName;
-    String fieldLocation;
-    double  fieldSize;
-    String fieldImage;
-    LogDTO log;
+public class LogDTO implements SuperDTO {
+    String logCode;
+    Date date;
+    String observation;
+    String observationImage;
 }
