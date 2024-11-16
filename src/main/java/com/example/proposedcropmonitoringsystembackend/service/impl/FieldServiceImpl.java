@@ -21,18 +21,13 @@ public class FieldServiceImpl implements FieldService {
     @Autowired
     private FieldDao fieldDao;
 
-    @Autowired
-    private LogDao logDao;
 
     @Autowired
     private Mapping fieldMapping;
     @Override
     public void save(FieldDTO dto) {
-        LogEntity logEntity = fieldMapping.toLogEntity(dto.getLog());
         FieldEntity fieldEntity = fieldMapping.toFieldEntity(dto);
-        fieldEntity.setLog(logEntity);
 
-        logDao.save(logEntity);
         fieldDao.save(fieldEntity);
     }
 
@@ -54,10 +49,7 @@ public class FieldServiceImpl implements FieldService {
             fieldEntity.setFieldLocation(dto.getFieldLocation());
             fieldEntity.setFieldSize(dto.getFieldSize());
             fieldEntity.setFieldImage(dto.getFieldImage());
-            LogEntity logEntity = fieldMapping.toLogEntity(dto.getLog());
-            fieldEntity.setLog(logEntity);
 
-            logDao.save(logEntity);
             fieldDao.save(fieldEntity);
         }
     }
@@ -67,8 +59,6 @@ public class FieldServiceImpl implements FieldService {
         if (fieldDao.existsById(id)){
             FieldEntity referenceById = fieldDao.getReferenceById(id);
             FieldDTO fieldDTO = fieldMapping.toFieldDTO(referenceById);
-            LogDTO logDTO = fieldMapping.toLogDTO(referenceById.getLog());
-            fieldDTO.setLog(logDTO);
 
             return fieldDTO;
         }

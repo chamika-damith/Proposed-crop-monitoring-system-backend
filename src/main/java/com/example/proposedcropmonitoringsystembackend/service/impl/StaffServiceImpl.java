@@ -24,8 +24,7 @@ import java.util.stream.Collectors;
 public class StaffServiceImpl implements StaffService {
     @Autowired
     private StaffDao staffDao;
-    @Autowired
-    private LogDao logDao;
+
 
     @Autowired
     private Mapping mapping;
@@ -33,13 +32,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void save(StaffDTO dto) {
         List<FieldEntity> fieldEntityList = mapping.asFieldEntityList(dto.getFields());
-        LogEntity logEntity = mapping.toLogEntity(dto.getLog());
         StaffEntity staffEntity = mapping.toStaffEntity(dto);
 
         staffEntity.setFields(fieldEntityList);
-        staffEntity.setLog(logEntity);
 
-        logDao.save(logEntity);
         staffDao.save(staffEntity);
     }
 
@@ -76,12 +72,6 @@ public class StaffServiceImpl implements StaffService {
                 staffEntity.setFields(fieldEntityList);
             }
 
-            if (dto.getLog() != null) {
-                LogEntity logEntity = mapping.toLogEntity(dto.getLog());
-                staffEntity.setLog(logEntity);
-                logDao.save(logEntity);
-            }
-
             staffDao.save(staffEntity);
         } else {
             throw new EntityNotFoundException("Staff entity with ID " + id + " not found.");
@@ -94,10 +84,8 @@ public class StaffServiceImpl implements StaffService {
             StaffEntity staffEntityById = staffDao.getReferenceById(id);
 
             StaffDTO staffDTO = mapping.toStaffDTO(staffEntityById);
-            LogDTO logDTO = mapping.toLogDTO(staffEntityById.getLog());
             List<FieldDTO> fieldDTOList = mapping.asFieldDTOList(staffEntityById.getFields());
             staffDTO.setFields(fieldDTOList);
-            staffDTO.setLog(logDTO);
 
             return staffDTO;
         } else {
@@ -111,10 +99,8 @@ public class StaffServiceImpl implements StaffService {
 
         return staffEntities.stream().map(staffEntity -> {
             StaffDTO staffDTO = mapping.toStaffDTO(staffEntity);
-            LogDTO logDTO = mapping.toLogDTO(staffEntity.getLog());
             List<FieldDTO> fieldDTOList = mapping.asFieldDTOList(staffEntity.getFields());
             staffDTO.setFields(fieldDTOList);
-            staffDTO.setLog(logDTO);
             return staffDTO;
         }).collect(Collectors.toList());
     }

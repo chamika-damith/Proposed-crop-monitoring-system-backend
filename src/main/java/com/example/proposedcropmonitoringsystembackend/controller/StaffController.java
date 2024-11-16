@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/staff")
@@ -26,11 +27,10 @@ public class StaffController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){
 
-        List<FieldDTO> fieldDTOS=new ArrayList<>();
+        List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
+                        .map(field ->fieldService.get(field.getFieldCode()))
+                        .collect(Collectors.toList());
 
-        for (FieldDTO field : staffDTO.getFields()) {
-            fieldDTOS.add(fieldService.get(field.getFieldCode()));
-        }
         staffDTO.setFields(fieldDTOS);
 
         staffService.save(staffDTO);
@@ -41,11 +41,10 @@ public class StaffController {
     @PutMapping(value = "/{staffId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateStaff(@RequestBody StaffDTO staffDTO,@PathVariable("staffId") String staffId){
 
-        List<FieldDTO> fieldDTOS=new ArrayList<>();
+        List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
+                .map(field ->fieldService.get(field.getFieldCode()))
+                .collect(Collectors.toList());
 
-        for (FieldDTO field : staffDTO.getFields()) {
-            fieldDTOS.add(fieldService.get(field.getFieldCode()));
-        }
         staffDTO.setFields(fieldDTOS);
 
         staffService.update(staffId,staffDTO);

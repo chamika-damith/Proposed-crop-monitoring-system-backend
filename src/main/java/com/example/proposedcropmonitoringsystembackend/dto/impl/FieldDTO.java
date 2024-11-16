@@ -15,5 +15,4 @@ public class FieldDTO implements SuperDTO {
     String fieldLocation;
     double  fieldSize;
     String fieldImage;
-    LogDTO log;
 }

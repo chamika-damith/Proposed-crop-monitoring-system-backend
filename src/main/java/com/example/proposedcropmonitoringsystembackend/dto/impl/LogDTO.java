@@ -16,4 +16,7 @@ public class LogDTO implements SuperDTO {
     Date date;
     String observation;
     String observationImage;
+    FieldDTO fieldDTO;
+    StaffDTO staffDTO;
+    CropDTO cropDTO;
 }

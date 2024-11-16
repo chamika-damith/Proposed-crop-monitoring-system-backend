@@ -30,7 +30,6 @@ public class FieldEntity implements SuperEntity {
     @OneToMany(mappedBy = "field")
     List<EquipmentEntity> equipmentEntityList;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "log_code")
+    @OneToOne(mappedBy = "fieldEntity" )
     LogEntity log;
 }

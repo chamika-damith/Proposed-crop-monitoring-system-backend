@@ -1,6 +1,5 @@
 package com.example.proposedcropmonitoringsystembackend.entity.impl;
 
-import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.SuperEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,6 @@ public class CropEntity implements SuperEntity {
     @JoinColumn(name = "field_code" , nullable = false)
     FieldEntity fieldEntity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "log_code")
+    @OneToOne(mappedBy = "cropEntity" )
     LogEntity log;
 }

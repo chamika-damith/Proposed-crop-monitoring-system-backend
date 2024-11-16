@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,17 +15,22 @@ import java.util.List;
 public class LogEntity implements SuperEntity {
     @Id
     String logCode;
+
     Date date;
     String observation;
+
     @Column(columnDefinition = "LONGTEXT")
     String observationImage;
 
-    @OneToMany(mappedBy = "log",cascade = CascadeType.ALL)
-    List<FieldEntity> fieldEntityList;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "field_code", referencedColumnName = "fieldCode")
+    FieldEntity fieldEntity;
 
-    @OneToMany(mappedBy = "log",cascade = CascadeType.ALL)
-    List<CropEntity> cropEntityList;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "crop_code", referencedColumnName = "cropCode")
+    CropEntity cropEntity;
 
-    @OneToMany(mappedBy = "log",cascade = CascadeType.ALL)
-    List<StaffEntity> staffEntityList;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "staff_id", referencedColumnName = "id")
+    StaffEntity staffEntity;
 }

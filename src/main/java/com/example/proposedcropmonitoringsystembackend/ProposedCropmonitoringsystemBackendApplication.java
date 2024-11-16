@@ -1,5 +1,6 @@
 package com.example.proposedcropmonitoringsystembackend;
 
+import com.example.proposedcropmonitoringsystembackend.entity.impl.LogEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,10 @@ public class ProposedCropmonitoringsystemBackendApplication {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper;
     }
+
 
 }

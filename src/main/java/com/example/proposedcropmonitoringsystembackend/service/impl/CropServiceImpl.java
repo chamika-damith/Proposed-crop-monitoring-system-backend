@@ -26,20 +26,16 @@ public class CropServiceImpl implements CropService {
     @Autowired
     private CropDao cropDao;
 
-    @Autowired
-    private LogDao logDao;
 
     @Autowired
     private Mapping mapping;
 
     @Override
     public void save(CropDTO dto) {
-        LogEntity logEntity = mapping.toLogEntity(dto.getLog());
         FieldEntity fieldEntity = mapping.toFieldEntity(dto.getFieldDTO());
         CropEntity cropEntity = mapping.toCropEntity(dto);
 
         cropEntity.setFieldEntity(fieldEntity);
-        cropEntity.setLog(logEntity);
 
         cropDao.save(cropEntity);
     }
@@ -71,12 +67,6 @@ public class CropServiceImpl implements CropService {
                 cropEntity.setFieldEntity(fieldEntity);
             }
 
-            if (dto.getLog() != null) {
-                LogEntity logEntity = mapping.toLogEntity(dto.getLog());
-                cropEntity.setLog(logEntity);
-                logDao.save(logEntity);
-            }
-
 
             cropDao.save(cropEntity);
         } else {
@@ -91,8 +81,6 @@ public class CropServiceImpl implements CropService {
             CropEntity cropEntityById = cropDao.getReferenceById(id);
             FieldDTO fieldDTO = mapping.toFieldDTO(cropEntityById.getFieldEntity());
             CropDTO cropDTO = mapping.toCropDTO(cropEntityById);
-            LogDTO logDTO = mapping.toLogDTO(cropEntityById.getLog());
-            cropDTO.setLog(logDTO);
             cropDTO.setFieldDTO(fieldDTO);
 
             return cropDTO;
@@ -108,8 +96,6 @@ public class CropServiceImpl implements CropService {
         List<CropDTO> cropDTOList = cropEntities.stream().map(cropEntity -> {
             FieldDTO fieldDTO = mapping.toFieldDTO(cropEntity.getFieldEntity());
             CropDTO cropDTO = mapping.toCropDTO(cropEntity);
-            LogDTO logDTO = mapping.toLogDTO(cropEntity.getLog());
-            cropDTO.setLog(logDTO);
             cropDTO.setFieldDTO(fieldDTO);
             return cropDTO;
         }).collect(Collectors.toList());
