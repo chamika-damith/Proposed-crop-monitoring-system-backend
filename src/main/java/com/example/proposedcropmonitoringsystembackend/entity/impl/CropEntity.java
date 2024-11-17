@@ -20,10 +20,10 @@ public class CropEntity implements SuperEntity {
     String category;
     String season;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "field_code" , nullable = false)
     FieldEntity fieldEntity;
 
-    @OneToOne(mappedBy = "cropEntity" )
+    @OneToOne(mappedBy = "cropEntity" , cascade = CascadeType.ALL)
     LogEntity log;
 }

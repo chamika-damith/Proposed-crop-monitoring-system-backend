@@ -14,28 +14,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/crops")
+@CrossOrigin
 public class CropController {
 
     @Autowired
     private CropService cropService;
 
-    @Autowired
-    private FieldService fieldService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveCrop(@RequestBody CropDTO cropDTO) {
 
         String base64ProPic = "";
 
-        byte[] bytesProPic = cropDTO.getImage().getBytes();
-        base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
+        //byte[] bytesProPic = cropDTO.getImage().getBytes();
+        //base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
 
-        FieldDTO fieldDTO = fieldService.get(cropDTO.getFieldDTO().getFieldCode());
-        if (fieldDTO == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        cropDTO.setFieldDTO(fieldDTO);
-        cropDTO.setImage(base64ProPic);
+        //cropDTO.setImage(base64ProPic);
         cropService.save(cropDTO);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -48,14 +42,10 @@ public class CropController {
 
         String base64ProPic = "";
 
-        byte[] bytesProPic = cropDTO.getImage().getBytes();
-        base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
+        //byte[] bytesProPic = cropDTO.getImage().getBytes();
+        //base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
 
-        FieldDTO fieldDTO = fieldService.get(cropDTO.getFieldDTO().getFieldCode());
-        if (fieldDTO == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        cropDTO.setImage(base64ProPic);
+        //cropDTO.setImage(base64ProPic);
 
         cropService.update(cropId,cropDTO);
 
@@ -79,5 +69,15 @@ public class CropController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/generateId")
+    public String generateCropId(){
+        return AppUtil.generateCropId();
+    }
+
+    @GetMapping(value = "/field/{fieldCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CropDTO> getCropsByField(@PathVariable("fieldCode") String fieldCode) {
+        System.out.println(fieldCode);
+        return cropService.getCropsByField(fieldCode);
+    }
 
 }

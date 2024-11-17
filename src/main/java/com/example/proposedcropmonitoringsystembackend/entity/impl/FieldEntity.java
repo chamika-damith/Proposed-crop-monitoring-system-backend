@@ -17,19 +17,20 @@ public class FieldEntity implements SuperEntity {
     String fieldCode;
     String fieldName;
     String fieldLocation;
-    double  fieldSize;
+    double fieldSize;
+
     @Column(columnDefinition = "LONGTEXT")
     String fieldImage;
-    @OneToMany(mappedBy = "fieldEntity")
+
+    @OneToMany(mappedBy = "fieldEntity", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     List<CropEntity> cropEntityList;
 
-    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     List<StaffEntity> staffEntityList;
 
-
-    @OneToMany(mappedBy = "field")
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
     List<EquipmentEntity> equipmentEntityList;
 
-    @OneToOne(mappedBy = "fieldEntity" )
+    @OneToOne(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
     LogEntity log;
 }

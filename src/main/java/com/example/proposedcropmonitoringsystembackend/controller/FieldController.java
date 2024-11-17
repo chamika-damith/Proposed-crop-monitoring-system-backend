@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class FieldController {
         base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
 
 
-        fieldDTO.setFieldImage(base64ProPic);
+        //fieldDTO.setFieldImage(base64ProPic);
         fieldService.save(fieldDTO);
 
 
@@ -44,7 +45,7 @@ public class FieldController {
         base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
 
 
-        fieldDTO.setFieldImage(base64ProPic);
+        //fieldDTO.setFieldImage(base64ProPic);
         fieldService.update(fieldId,fieldDTO);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -66,5 +67,10 @@ public class FieldController {
     public ResponseEntity<Void> deleteField(@PathVariable("fieldId") String fieldId){
         fieldService.delete(fieldId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/generateId")
+    public String generateFieldId(){
+        return AppUtil.generateFieldId();
     }
 }

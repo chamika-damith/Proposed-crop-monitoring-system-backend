@@ -31,7 +31,7 @@ public class StaffEntity implements SuperEntity {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "staff_field",
             joinColumns = @JoinColumn(name = "staff_id"),
@@ -45,6 +45,6 @@ public class StaffEntity implements SuperEntity {
     @OneToMany(mappedBy = "staff")
     List<EquipmentEntity> equipmentEntityList;
 
-    @OneToOne(mappedBy = "staffEntity" )
+    @OneToOne(mappedBy ="staffEntity")
     LogEntity log;
 }

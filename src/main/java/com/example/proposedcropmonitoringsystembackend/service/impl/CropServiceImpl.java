@@ -103,4 +103,10 @@ public class CropServiceImpl implements CropService {
         return cropDTOList;
     }
 
+    @Override
+    public List<CropDTO> getCropsByField(String fieldCode) {
+        List<CropEntity> cropsByFieldCode = cropDao.findCropsByFieldCode(fieldCode);
+        List<CropDTO> cropDTOList = mapping.asCropDTOList(cropsByFieldCode);
+        return cropDTOList;
+    }
 }
