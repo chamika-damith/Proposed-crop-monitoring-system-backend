@@ -15,4 +15,8 @@ public class AppUtil {
     public static String generateCropId(){
         return "C-"+ UUID.randomUUID();
     }
+
+    public static String generateStaffId(){
+        return "S-"+ UUID.randomUUID();
+    }
 }

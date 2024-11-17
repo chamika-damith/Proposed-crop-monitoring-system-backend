@@ -5,6 +5,7 @@ import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.service.StaffService;
+import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/staff")
+@CrossOrigin
 public class StaffController {
     @Autowired
     private StaffService staffService;
@@ -26,6 +28,7 @@ public class StaffController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){
+        System.out.println(staffDTO);
 
         List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
                         .map(field ->fieldService.get(field.getFieldCode()))
@@ -67,4 +70,10 @@ public class StaffController {
         staffService.delete(staffId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/generateId")
+    public String generateStaffId(){
+        return AppUtil.generateStaffId();
+    }
+
 }

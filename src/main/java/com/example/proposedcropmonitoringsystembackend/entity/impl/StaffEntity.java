@@ -31,7 +31,7 @@ public class StaffEntity implements SuperEntity {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "staff_field",
             joinColumns = @JoinColumn(name = "staff_id"),
