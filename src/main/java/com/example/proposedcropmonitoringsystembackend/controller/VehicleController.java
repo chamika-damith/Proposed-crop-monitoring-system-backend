@@ -4,6 +4,7 @@ import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.VehicleDTO;
 import com.example.proposedcropmonitoringsystembackend.service.VehicleService;
+import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/vehicle")
+@CrossOrigin
 public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
@@ -48,5 +50,10 @@ public class VehicleController {
     public ResponseEntity<Void> deleteCrop(@PathVariable("vehicleCode") String vehicleCode){
         vehicleService.delete(vehicleCode);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/generateId")
+    public String generateVehicleId(){
+        return AppUtil.generateVehicleId();
     }
 }

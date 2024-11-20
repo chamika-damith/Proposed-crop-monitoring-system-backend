@@ -22,15 +22,15 @@ public class FieldEntity implements SuperEntity {
     @Column(columnDefinition = "LONGTEXT")
     String fieldImage;
 
-    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
     List<CropEntity> cropEntityList;
 
     @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     List<StaffEntity> staffEntityList;
 
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
     List<EquipmentEntity> equipmentEntityList;
 
-    @OneToOne(mappedBy = "fieldEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
     LogEntity log;
 }
