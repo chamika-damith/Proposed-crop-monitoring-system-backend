@@ -99,4 +99,12 @@ public class Mapping {
     public List<LogDTO> asLogDTOList(List<LogEntity> logEntityList) {
         return modelMapper.map(logEntityList, new TypeToken<List<LogDTO>>() {}.getType());
     }
+
+    //for user mapping
+    public UserEntity toUserEntity(UserDTO userDTO) {
+        return modelMapper.map(userDTO, UserEntity.class);
+    }
+    public UserDTO toUserDTO(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserDTO.class);
+    }
 }

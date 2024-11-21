@@ -28,7 +28,6 @@ public class StaffController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){
-        System.out.println(staffDTO);
 
         List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
                         .map(field ->fieldService.get(field.getFieldCode()))
