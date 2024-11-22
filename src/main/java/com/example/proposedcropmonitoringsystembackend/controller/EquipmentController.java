@@ -21,7 +21,7 @@ public class EquipmentController {
     private EquipmentService equipmentService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDTO equipmentDTO){
 
 
@@ -31,7 +31,7 @@ public class EquipmentController {
     }
 
     @PutMapping(value = "/{equipmentCode}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> updateEquipment(@RequestBody EquipmentDTO equipmentDTO,@PathVariable("equipmentCode") String equipmentCode){
 
         equipmentService.update(equipmentCode,equipmentDTO);
@@ -50,7 +50,7 @@ public class EquipmentController {
     }
 
     @DeleteMapping(value = "/{equipmentCode}")
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> deleteEquipment(@PathVariable("equipmentCode") String equipmentCode){
         equipmentService.delete(equipmentCode);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

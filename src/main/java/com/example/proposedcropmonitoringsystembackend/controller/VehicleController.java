@@ -22,7 +22,7 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> saveVehicle(@RequestBody VehicleDTO vehicleDTO){
 
         vehicleService.save(vehicleDTO);
@@ -31,7 +31,7 @@ public class VehicleController {
     }
 
     @PutMapping(value = "/{vehicleCode}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> updateVehicle(@RequestBody VehicleDTO vehicleDTO,@PathVariable("vehicleCode") String vehicleCode){
 
         vehicleService.update(vehicleCode,vehicleDTO);
@@ -50,7 +50,7 @@ public class VehicleController {
     }
 
     @DeleteMapping(value = "/{vehicleCode}")
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> deleteCrop(@PathVariable("vehicleCode") String vehicleCode){
         vehicleService.delete(vehicleCode);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

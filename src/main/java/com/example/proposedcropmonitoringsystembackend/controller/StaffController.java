@@ -28,7 +28,7 @@ public class StaffController {
     private FieldService fieldService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){
 
         List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
@@ -43,7 +43,7 @@ public class StaffController {
     }
 
     @PutMapping(value = "/{staffId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> updateStaff(@RequestBody StaffDTO staffDTO,@PathVariable("staffId") String staffId){
 
         List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
@@ -68,7 +68,7 @@ public class StaffController {
     }
 
     @DeleteMapping(value = "/{staffId}")
-    @PreAuthorize("hasRole('MANAGER,ADMINISTRATIVE')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> deleteStaff(@PathVariable("staffId") String staffId){
         staffService.delete(staffId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
