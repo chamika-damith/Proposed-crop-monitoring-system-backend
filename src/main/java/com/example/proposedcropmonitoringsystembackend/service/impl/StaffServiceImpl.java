@@ -2,9 +2,11 @@ package com.example.proposedcropmonitoringsystembackend.service.impl;
 
 import com.example.proposedcropmonitoringsystembackend.dao.LogDao;
 import com.example.proposedcropmonitoringsystembackend.dao.StaffDao;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.LogDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
+import com.example.proposedcropmonitoringsystembackend.entity.impl.CropEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.FieldEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.LogEntity;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.StaffEntity;
@@ -103,5 +105,12 @@ public class StaffServiceImpl implements StaffService {
             staffDTO.setFields(fieldDTOList);
             return staffDTO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StaffDTO> getStaffByField(String fieldCode) {
+        List<StaffEntity> staffByFieldCode = staffDao.findStaffByFieldCode(fieldCode);
+        List<StaffDTO> staffDTOList = mapping.asStaffDTOList(staffByFieldCode);
+        return staffDTOList;
     }
 }

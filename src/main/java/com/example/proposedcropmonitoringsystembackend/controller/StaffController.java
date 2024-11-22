@@ -75,4 +75,9 @@ public class StaffController {
         return AppUtil.generateStaffId();
     }
 
+    @GetMapping(value = "/field/{fieldCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<StaffDTO> getStaffByField(@PathVariable("fieldCode") String fieldCode) {
+        return staffService.getStaffByField(fieldCode);
+    }
+
 }
