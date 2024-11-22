@@ -21,6 +21,7 @@ public class FieldController {
     private FieldService fieldService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> saveField(@RequestBody FieldDTO fieldDTO) {
 
         String base64ProPic = "";
@@ -38,6 +39,7 @@ public class FieldController {
     }
 
     @PutMapping(value = "/{fieldId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> updateField(@RequestBody FieldDTO fieldDTO,@PathVariable("fieldId") String fieldId){
 
         String base64ProPic = "";
@@ -60,12 +62,12 @@ public class FieldController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('MANAGER')")
     public List<FieldDTO> getAllFields(){
         return fieldService.getAll();
     }
 
     @DeleteMapping(value = "/{fieldId}")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> deleteField(@PathVariable("fieldId") String fieldId){
         fieldService.delete(fieldId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

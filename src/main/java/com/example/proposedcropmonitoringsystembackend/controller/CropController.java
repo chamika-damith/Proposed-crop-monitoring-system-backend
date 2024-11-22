@@ -1,14 +1,13 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
 import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.service.CropService;
-import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -22,6 +21,7 @@ public class CropController {
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> saveCrop(@RequestBody CropDTO cropDTO) {
 
         String base64ProPic = "";
@@ -37,6 +37,7 @@ public class CropController {
 
 
     @PutMapping(value = "/{cropId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> updateCrop(@RequestBody CropDTO cropDTO,@PathVariable("cropId") String cropId){
 
 
@@ -64,6 +65,7 @@ public class CropController {
     }
 
     @DeleteMapping(value = "/{cropdId}")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> deleteCrop(@PathVariable("cropdId") String cropId){
         cropService.delete(cropId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
