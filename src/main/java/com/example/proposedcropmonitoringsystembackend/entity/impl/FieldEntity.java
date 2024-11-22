@@ -25,7 +25,7 @@ public class FieldEntity implements SuperEntity {
     @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
     List<CropEntity> cropEntityList;
 
-    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST})
     List<StaffEntity> staffEntityList;
 
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)

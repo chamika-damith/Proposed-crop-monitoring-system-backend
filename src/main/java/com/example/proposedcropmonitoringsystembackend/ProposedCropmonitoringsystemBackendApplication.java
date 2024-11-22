@@ -1,6 +1,5 @@
 package com.example.proposedcropmonitoringsystembackend;
 
-import com.example.proposedcropmonitoringsystembackend.entity.impl.LogEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
