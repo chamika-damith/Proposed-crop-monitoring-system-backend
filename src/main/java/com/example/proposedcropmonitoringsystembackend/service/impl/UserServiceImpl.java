@@ -3,10 +3,13 @@ package com.example.proposedcropmonitoringsystembackend.service.impl;
 import com.example.proposedcropmonitoringsystembackend.dao.UserDao;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.UserDTO;
 import com.example.proposedcropmonitoringsystembackend.entity.impl.UserEntity;
+import com.example.proposedcropmonitoringsystembackend.exception.UserNotFoundException;
 import com.example.proposedcropmonitoringsystembackend.service.UserService;
 import com.example.proposedcropmonitoringsystembackend.util.Mapping;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,5 +63,12 @@ public class UserServiceImpl implements UserService {
             UserDTO userDTO = mapping.toUserDTO(user);
             return userDTO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return userName ->
+                (UserDetails) userDao.findByEmail(userName)
+                        .orElseThrow(()-> new UserNotFoundException("User Not Found"));
     }
 }
