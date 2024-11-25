@@ -1,10 +1,13 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.customstatuscode.SuccessStatus;
+import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.VehicleDTO;
 import com.example.proposedcropmonitoringsystembackend.service.VehicleService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
+import com.example.proposedcropmonitoringsystembackend.util.ValidateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,20 +26,29 @@ public class VehicleController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
-    public ResponseEntity<Void> saveVehicle(@RequestBody VehicleDTO vehicleDTO){
+    public CustomStatus saveVehicle(@RequestBody VehicleDTO vehicleDTO){
+
+        CustomStatus customStatus = ValidateData.validateVehicleDTO(vehicleDTO);
+        if (customStatus != null) {
+            return customStatus;
+        }
 
         vehicleService.save(vehicleDTO);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new SuccessStatus( HttpStatus.CREATED.value(),"vehicle saved successfully!");
     }
 
     @PutMapping(value = "/{vehicleCode}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
-    public ResponseEntity<Void> updateVehicle(@RequestBody VehicleDTO vehicleDTO,@PathVariable("vehicleCode") String vehicleCode){
+    public CustomStatus updateVehicle(@RequestBody VehicleDTO vehicleDTO,@PathVariable("vehicleCode") String vehicleCode){
 
+        CustomStatus customStatus = ValidateData.validateVehicleDTO(vehicleDTO);
+        if (customStatus != null) {
+            return customStatus;
+        }
         vehicleService.update(vehicleCode,vehicleDTO);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new SuccessStatus( HttpStatus.CREATED.value(),"vehicle update successfully!");
     }
 
     @GetMapping(value = "/{vehicleCode}" ,produces = MediaType.APPLICATION_JSON_VALUE)

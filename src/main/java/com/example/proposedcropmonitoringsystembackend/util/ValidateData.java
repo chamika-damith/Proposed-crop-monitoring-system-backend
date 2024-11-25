@@ -2,10 +2,7 @@ package com.example.proposedcropmonitoringsystembackend.util;
 
 import com.example.proposedcropmonitoringsystembackend.customstatuscode.ErrorStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.EquipmentDTO;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
-import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
+import com.example.proposedcropmonitoringsystembackend.dto.impl.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -97,5 +94,36 @@ public class ValidateData {
         return null;
     }
 
+    public static CustomStatus validateVehicleDTO(VehicleDTO vehicle) {
+        if (vehicle == null) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Vehicle details are required");
+        }
 
+        if (vehicle.getLicensePlateNum() == null || !isValid(vehicle.getLicensePlateNum(), Regex.getAddressPattern())) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Invalid license plate number");
+        }
+
+        if (vehicle.getCategory() == null || vehicle.getCategory().isEmpty()) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Vehicle category is required");
+        }
+
+        if (vehicle.getFuelType() == null || vehicle.getFuelType().isEmpty()) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Fuel type is required");
+        }
+
+        if (vehicle.getStatus() == null || vehicle.getStatus().isEmpty()) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Vehicle status is required");
+        }
+
+        if (vehicle.getRemarks() != null && vehicle.getRemarks().length() > 255) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Remarks are too long");
+        }
+
+        CustomStatus staffValidation = validateStaffDTO(vehicle.getStaff());
+        if (staffValidation != null) {
+            return staffValidation;
+        }
+
+        return null;
+    }
 }
