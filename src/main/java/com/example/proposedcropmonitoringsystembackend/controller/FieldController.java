@@ -1,8 +1,11 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.customstatuscode.SuccessStatus;
+import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
+import com.example.proposedcropmonitoringsystembackend.util.ValidateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,36 +25,30 @@ public class FieldController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<Void> saveField(@RequestBody FieldDTO fieldDTO) {
+    public CustomStatus saveField(@RequestBody FieldDTO fieldDTO) {
 
-        String base64ProPic = "";
-
-        byte [] bytesProPic = fieldDTO.getFieldImage().getBytes();
-        base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
-
-
-        //fieldDTO.setFieldImage(base64ProPic);
+        CustomStatus customStatus = ValidateData.validateFieldDTO(fieldDTO);
+        if (customStatus != null){
+            return customStatus;
+        }
         fieldService.save(fieldDTO);
 
 
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new SuccessStatus(HttpStatus.CREATED.value(),"Crop saved successfully!");
     }
 
     @PutMapping(value = "/{fieldId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<Void> updateField(@RequestBody FieldDTO fieldDTO,@PathVariable("fieldId") String fieldId){
+    public CustomStatus updateField(@RequestBody FieldDTO fieldDTO,@PathVariable("fieldId") String fieldId){
 
-        String base64ProPic = "";
-
-        byte [] bytesProPic = fieldDTO.getFieldImage().getBytes();
-        base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
-
-
-        //fieldDTO.setFieldImage(base64ProPic);
+        CustomStatus customStatus = ValidateData.validateFieldDTO(fieldDTO);
+        if (customStatus != null){
+            return customStatus;
+        }
         fieldService.update(fieldId,fieldDTO);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new SuccessStatus(HttpStatus.OK.value(),"Crop update successfully!");
 
     }
 

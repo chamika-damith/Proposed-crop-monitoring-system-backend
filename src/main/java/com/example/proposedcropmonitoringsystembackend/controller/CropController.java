@@ -1,8 +1,13 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.customstatuscode.ErrorStatus;
+import com.example.proposedcropmonitoringsystembackend.customstatuscode.SuccessStatus;
+import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.service.CropService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
+import com.example.proposedcropmonitoringsystembackend.util.Regex;
+import com.example.proposedcropmonitoringsystembackend.util.ValidateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("api/v1/crops")
@@ -22,35 +28,29 @@ public class CropController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<Void> saveCrop(@RequestBody CropDTO cropDTO) {
+    public CustomStatus saveCrop(@RequestBody CropDTO cropDTO) {
+        CustomStatus customStatus = ValidateData.validateCropDTO(cropDTO);
+        if (customStatus != null) {
+            return customStatus;
+        }
 
-        String base64ProPic = "";
-
-        //byte[] bytesProPic = cropDTO.getImage().getBytes();
-        //base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
-
-        //cropDTO.setImage(base64ProPic);
         cropService.save(cropDTO);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new SuccessStatus( HttpStatus.CREATED.value(),"Crop saved successfully!");
     }
 
 
     @PutMapping(value = "/{cropId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<Void> updateCrop(@RequestBody CropDTO cropDTO,@PathVariable("cropId") String cropId){
+    public CustomStatus updateCrop(@RequestBody CropDTO cropDTO,@PathVariable("cropId") String cropId){
 
-
-        String base64ProPic = "";
-
-        //byte[] bytesProPic = cropDTO.getImage().getBytes();
-        //base64ProPic = AppUtil.profilePicToBase64(bytesProPic);
-
-        //cropDTO.setImage(base64ProPic);
+        CustomStatus customStatus = ValidateData.validateCropDTO(cropDTO);
+        if (customStatus != null) {
+            return customStatus;
+        }
 
         cropService.update(cropId,cropDTO);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new SuccessStatus( HttpStatus.OK.value(),"Crop updated successfully!");
     }
 
 
@@ -81,5 +81,4 @@ public class CropController {
         System.out.println(fieldCode);
         return cropService.getCropsByField(fieldCode);
     }
-
 }

@@ -1,9 +1,12 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.customstatuscode.SuccessStatus;
+import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.EquipmentDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.VehicleDTO;
 import com.example.proposedcropmonitoringsystembackend.service.EquipmentService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
+import com.example.proposedcropmonitoringsystembackend.util.ValidateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,21 +25,27 @@ public class EquipmentController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
-    public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDTO equipmentDTO){
+    public CustomStatus saveEquipment(@RequestBody EquipmentDTO equipmentDTO){
 
-
+        CustomStatus customStatus = ValidateData.validateEquipmentDTO(equipmentDTO);
+        if(customStatus != null){
+            return customStatus;
+        }
         equipmentService.save(equipmentDTO);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new SuccessStatus( HttpStatus.CREATED.value(),"Equipment saved successfully!");
     }
 
     @PutMapping(value = "/{equipmentCode}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
-    public ResponseEntity<Void> updateEquipment(@RequestBody EquipmentDTO equipmentDTO,@PathVariable("equipmentCode") String equipmentCode){
+    public CustomStatus updateEquipment(@RequestBody EquipmentDTO equipmentDTO,@PathVariable("equipmentCode") String equipmentCode){
 
+        CustomStatus customStatus = ValidateData.validateEquipmentDTO(equipmentDTO);
+        if(customStatus != null){
+            return customStatus;
+        }
         equipmentService.update(equipmentCode,equipmentDTO);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new SuccessStatus( HttpStatus.CREATED.value(),"Equipment update successfully!");
     }
 
     @GetMapping(value = "/{equipmentCode}" ,produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,5 +1,6 @@
 package com.example.proposedcropmonitoringsystembackend.dto.impl;
 
+import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.SuperDTO;
 import com.example.proposedcropmonitoringsystembackend.util.Gender;
 import com.example.proposedcropmonitoringsystembackend.util.Role;
@@ -14,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffDTO implements SuperDTO {
+public class StaffDTO implements CustomStatus {
     String id;
     String firstName;
     String lastName;

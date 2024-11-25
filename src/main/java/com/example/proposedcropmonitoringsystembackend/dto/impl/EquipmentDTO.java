@@ -1,5 +1,6 @@
 package com.example.proposedcropmonitoringsystembackend.dto.impl;
 
+import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.SuperDTO;
 import com.example.proposedcropmonitoringsystembackend.util.EquipmentStatus;
 import com.example.proposedcropmonitoringsystembackend.util.EquipmentType;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EquipmentDTO implements SuperDTO {
+public class EquipmentDTO implements CustomStatus {
     String EquipmentId;
     String name;
     @Enumerated(EnumType.STRING)

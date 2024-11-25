@@ -1,11 +1,14 @@
 package com.example.proposedcropmonitoringsystembackend.controller;
 
+import com.example.proposedcropmonitoringsystembackend.customstatuscode.SuccessStatus;
+import com.example.proposedcropmonitoringsystembackend.dto.CustomStatus;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.CropDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.FieldDTO;
 import com.example.proposedcropmonitoringsystembackend.dto.impl.StaffDTO;
 import com.example.proposedcropmonitoringsystembackend.service.FieldService;
 import com.example.proposedcropmonitoringsystembackend.service.StaffService;
 import com.example.proposedcropmonitoringsystembackend.util.AppUtil;
+import com.example.proposedcropmonitoringsystembackend.util.ValidateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +32,12 @@ public class StaffController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
-    public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){
+    public CustomStatus saveStaff(@RequestBody StaffDTO staffDTO){
+
+        CustomStatus customStatus = ValidateData.validateStaffDTO(staffDTO);
+        if (customStatus != null){
+            return customStatus;
+        }
 
         List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
                         .map(field ->fieldService.get(field.getFieldCode()))
@@ -39,12 +47,17 @@ public class StaffController {
 
         staffService.save(staffDTO);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new SuccessStatus( HttpStatus.CREATED.value(),"staff saved successfully!");
     }
 
     @PutMapping(value = "/{staffId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
-    public ResponseEntity<Void> updateStaff(@RequestBody StaffDTO staffDTO,@PathVariable("staffId") String staffId){
+    public CustomStatus updateStaff(@RequestBody StaffDTO staffDTO,@PathVariable("staffId") String staffId){
+
+        CustomStatus customStatus = ValidateData.validateStaffDTO(staffDTO);
+        if (customStatus != null){
+            return customStatus;
+        }
 
         List<FieldDTO> fieldDTOS=staffDTO.getFields().stream()
                 .map(field ->fieldService.get(field.getFieldCode()))
@@ -54,7 +67,7 @@ public class StaffController {
 
         staffService.update(staffId,staffDTO);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new SuccessStatus( HttpStatus.OK.value(),"staff Update successfully!");
     }
 
     @GetMapping(value = "/{staffId}" ,produces = MediaType.APPLICATION_JSON_VALUE)
