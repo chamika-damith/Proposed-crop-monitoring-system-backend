@@ -99,10 +99,6 @@ public class ValidateData {
             return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Vehicle details are required");
         }
 
-        if (vehicle.getLicensePlateNum() == null || !isValid(vehicle.getLicensePlateNum(), Regex.getAddressPattern())) {
-            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Invalid license plate number");
-        }
-
         if (vehicle.getCategory() == null || vehicle.getCategory().isEmpty()) {
             return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Vehicle category is required");
         }
