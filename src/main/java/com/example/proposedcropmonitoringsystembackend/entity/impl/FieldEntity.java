@@ -22,7 +22,10 @@ public class FieldEntity implements SuperEntity {
     @Column(columnDefinition = "LONGTEXT")
     String fieldImage;
 
-    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
+    @Column(columnDefinition = "LONGTEXT")
+    String fieldImage2;
+
+    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
     List<CropEntity> cropEntityList;
 
     @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST})
@@ -31,6 +34,6 @@ public class FieldEntity implements SuperEntity {
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
     List<EquipmentEntity> equipmentEntityList;
 
-    @OneToOne(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
-    LogEntity log;
+    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<LogEntity> logEntityList;
 }

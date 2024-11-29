@@ -33,8 +33,6 @@ public class FieldController {
         }
         fieldService.save(fieldDTO);
 
-
-
         return new SuccessStatus(HttpStatus.CREATED.value(),"Crop saved successfully!");
     }
 

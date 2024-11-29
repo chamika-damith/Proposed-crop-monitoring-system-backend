@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,10 +22,10 @@ public class CropEntity implements SuperEntity {
     String category;
     String season;
 
-    @ManyToOne
-    @JoinColumn(name = "field_code" , nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "field_code" )
     FieldEntity fieldEntity;
 
-    @OneToOne(mappedBy = "cropEntity" , cascade = CascadeType.ALL)
-    LogEntity log;
+    @OneToMany(mappedBy = "cropEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<LogEntity> logEntityList;
 }

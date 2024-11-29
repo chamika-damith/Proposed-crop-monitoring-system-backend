@@ -22,12 +22,12 @@ public class LogEntity implements SuperEntity {
     @Column(columnDefinition = "LONGTEXT")
     String observationImage;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "field_code", referencedColumnName = "fieldCode")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "field_code")
     FieldEntity fieldEntity;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "crop_code", referencedColumnName = "cropCode")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "crop_code")
     CropEntity cropEntity;
 
     @OneToOne(cascade = CascadeType.ALL)

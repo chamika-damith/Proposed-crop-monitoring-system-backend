@@ -100,6 +100,7 @@ public class Mapping {
         return modelMapper.map(logEntityList, new TypeToken<List<LogDTO>>() {}.getType());
     }
 
+
     //for user mapping
     public UserEntity toUserEntity(UserDTO userDTO) {
         return modelMapper.map(userDTO, UserEntity.class);

@@ -16,4 +16,5 @@ public class FieldDTO implements CustomStatus {
     String fieldLocation;
     double  fieldSize;
     String fieldImage;
+    String fieldImage2;
 }

@@ -113,13 +113,64 @@ public class LogServiceImpl implements LogService {
         return null;
     }
 
-
-    @Override
     public List<LogDTO> getAll() {
         List<LogEntity> logEntities = logDao.findAll();
-
         return logEntities.stream()
-                .map(mapping::toLogDTO)
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    private LogDTO convertToDTO(LogEntity logEntity) {
+        LogDTO logDTO = new LogDTO();
+        logDTO.setLogCode(logEntity.getLogCode());
+        logDTO.setDate(logEntity.getDate());
+        logDTO.setObservation(logEntity.getObservation());
+        logDTO.setObservationImage(logEntity.getObservationImage());
+
+        if (logEntity.getFieldEntity() != null) {
+            FieldDTO fieldDTO = new FieldDTO();
+            fieldDTO.setFieldCode(logEntity.getFieldEntity().getFieldCode());
+            fieldDTO.setFieldName(logEntity.getFieldEntity().getFieldName());
+            fieldDTO.setFieldLocation(logEntity.getFieldEntity().getFieldLocation());
+            fieldDTO.setFieldSize(logEntity.getFieldEntity().getFieldSize());
+            fieldDTO.setFieldImage(logEntity.getFieldEntity().getFieldImage());
+            fieldDTO.setFieldImage2(logEntity.getFieldEntity().getFieldImage2());
+
+            logDTO.setFieldDTO(fieldDTO);
+        }
+
+        if (logEntity.getCropEntity() != null) {
+            CropDTO cropDTO = new CropDTO();
+            cropDTO.setCropCode(logEntity.getCropEntity().getCropCode());
+            cropDTO.setCommonName(logEntity.getCropEntity().getCommonName());
+            cropDTO.setScientificName(logEntity.getCropEntity().getScientificName());
+            cropDTO.setImage(logEntity.getCropEntity().getImage());
+            cropDTO.setCategory(logEntity.getCropEntity().getCategory());
+            cropDTO.setSeason(logEntity.getCropEntity().getSeason());
+            logDTO.setCropDTO(cropDTO);
+        }
+
+        if (logEntity.getStaffEntity() != null) {
+            StaffDTO staffDTO = new StaffDTO();
+            StaffEntity staffEntity = logEntity.getStaffEntity();
+
+            staffDTO.setId(staffEntity.getId());
+            staffDTO.setFirstName(staffEntity.getFirstName());
+            staffDTO.setLastName(staffEntity.getLastName());
+            staffDTO.setDesignation(staffEntity.getDesignation());
+            staffDTO.setGender(staffEntity.getGender());
+            staffDTO.setJoinedDate(staffEntity.getJoinedDate());
+            staffDTO.setDob(staffEntity.getDob());
+            staffDTO.setAddress(staffEntity.getAddress());
+            staffDTO.setContact(staffEntity.getContact());
+            staffDTO.setEmail(staffEntity.getEmail());
+            staffDTO.setRole(staffEntity.getRole());
+
+
+            logDTO.setStaffDTO(staffDTO);
+        }
+
+
+        return logDTO;
     }
 }

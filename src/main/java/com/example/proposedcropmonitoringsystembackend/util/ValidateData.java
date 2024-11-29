@@ -126,4 +126,18 @@ public class ValidateData {
 
         return null;
     }
+
+    public static CustomStatus validateLogDTO(LogDTO logDTO){
+        if (!isValid(logDTO.getObservation(), Regex.getAddressPattern())) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Invalid log observation");
+        }
+        if (logDTO.getDate() == null) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "log date is required");
+        }
+        if (logDTO.getObservationImage() == null) {
+            return new ErrorStatus(HttpStatus.BAD_REQUEST.value(), "Log image is required");
+        }
+
+        return null;
+    }
 }

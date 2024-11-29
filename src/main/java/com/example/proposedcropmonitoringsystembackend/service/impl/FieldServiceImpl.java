@@ -49,6 +49,7 @@ public class FieldServiceImpl implements FieldService {
             fieldEntity.setFieldLocation(dto.getFieldLocation());
             fieldEntity.setFieldSize(dto.getFieldSize());
             fieldEntity.setFieldImage(dto.getFieldImage());
+            fieldEntity.setFieldImage2(dto.getFieldImage2());
 
             fieldDao.save(fieldEntity);
         }
