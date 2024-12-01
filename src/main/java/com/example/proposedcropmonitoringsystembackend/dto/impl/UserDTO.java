@@ -16,4 +16,5 @@ public class UserDTO implements SuperDTO {
     String password;
     @Enumerated(EnumType.STRING)
     Role userRole;
+    boolean status;
 }

@@ -52,4 +52,9 @@ public class UserController {
     public List<UserDTO> getAllUsers(){
         return userService.getAll();
     }
+
+    @GetMapping("/active")
+    public UserDTO getActiveUsers() {
+        return userService.getActiveUsers();
+    }
 }

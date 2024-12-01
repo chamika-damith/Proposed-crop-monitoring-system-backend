@@ -27,6 +27,7 @@ public class UserEntity implements SuperEntity, UserDetails {
     String password;
     @Enumerated(EnumType.STRING)
     Role userRole;
+    boolean status;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
