@@ -23,7 +23,6 @@ public class UserController {
     @RequestMapping("/signin")
     public ResponseEntity<Void> saveUser(@RequestBody UserDTO userDTO){
         userService.save(userDTO);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
